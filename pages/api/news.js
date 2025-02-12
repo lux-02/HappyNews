@@ -3,11 +3,27 @@ import * as cheerio from "cheerio";
 import { LanguageServiceClient } from "@google-cloud/language";
 import path from "path";
 
-// LanguageServiceClient 초기화 부분을 파일 상단으로 이동
-const keyFilePath = path.join(process.cwd(), "googlekey.json");
-const languageClient = new LanguageServiceClient({
-  keyFilename: keyFilePath,
-});
+// LanguageServiceClient 초기화: GOOGLE_KEY_JSON 환경변수가 있으면 사용, 없으면 로컬 파일 사용
+let languageClient;
+if (process.env.GOOGLE_KEY_JSON) {
+  try {
+    const credentials = JSON.parse(process.env.GOOGLE_KEY_JSON);
+    languageClient = new LanguageServiceClient({ credentials });
+    console.log(
+      "LanguageServiceClient initialized using GOOGLE_KEY_JSON environment variable."
+    );
+  } catch (error) {
+    console.error("Error parsing GOOGLE_KEY_JSON:", error);
+    throw error;
+  }
+} else {
+  const keyFilePath = path.join(process.cwd(), "googlekey.json");
+  languageClient = new LanguageServiceClient({ keyFilename: keyFilePath });
+  console.log(
+    "LanguageServiceClient initialized using keyFilename:",
+    keyFilePath
+  );
+}
 
 /**
  * HTML 콘텐츠에서 순수 텍스트를 추출한 후 감정 분석을 수행하는 함수
@@ -15,7 +31,6 @@ const languageClient = new LanguageServiceClient({
  * @returns {Promise<string>} - "positive", "negative", 또는 분석 실패 시 "neutral"
  */
 async function analyzeSentimentForContent(contentHtml) {
-  // cheerio를 이용해 HTML에서 순수 텍스트 추출
   const $ = cheerio.load(contentHtml);
   const plainText = $.text().replace(/\s+/g, " ").trim();
 
@@ -25,21 +40,19 @@ async function analyzeSentimentForContent(contentHtml) {
   }
 
   try {
-    // 문서 객체 생성 - 한국어 언어 명시
     const document = {
       content: plainText,
       type: "PLAIN_TEXT",
-      language: "ko", // 한국어 명시
+      language: "ko", // 한국어 명시 (필요시)
     };
 
-    // 감정 분석 요청
-    const [result] = await languageClient.analyzeSentiment({
-      document: document,
+    const request = {
+      document,
       encodingType: "UTF8",
-    });
+    };
 
-    const score = result.documentSentiment.score;
-    const magnitude = result.documentSentiment.magnitude;
+    const [result] = await languageClient.analyzeSentiment(request);
+    const { score, magnitude } = result.documentSentiment;
     console.log(
       "Sentiment analysis result - score:",
       score,
@@ -47,13 +60,7 @@ async function analyzeSentimentForContent(contentHtml) {
       magnitude
     );
 
-    // 감정 분석 기준 수정
-    // magnitude가 높을수록 감정의 강도가 강함
-    // score는 -1(매우 부정)에서 1(매우 긍정) 사이의 값
-    if (magnitude < 0.1) {
-      return "neutral"; // 감정 강도가 매우 낮은 경우
-    }
-
+    if (magnitude < 0.1) return "neutral";
     if (score >= 0.2) return "positive";
     if (score <= -0.2) return "negative";
     return "neutral";
@@ -73,7 +80,6 @@ export default async function handler(req, res) {
     });
   }
 
-  // 쿼리 파라미터 (기본값: query="주식", display=30, start=1, sort="date")
   const { query = "주식", display = 30, start = 1, sort = "date" } = req.query;
   const apiUrl = `https://openapi.naver.com/v1/search/news.json?query=${encodeURIComponent(
     query
@@ -82,7 +88,6 @@ export default async function handler(req, res) {
   console.log("Handler - Fetching news from Naver API with URL:", apiUrl);
 
   try {
-    // 네이버 뉴스 검색 API 호출
     const apiResponse = await fetch(apiUrl, {
       headers: {
         "X-Naver-Client-Id": clientId,
@@ -102,17 +107,14 @@ export default async function handler(req, res) {
       "news items from Naver API."
     );
 
-    // 각 뉴스 항목에 대해 크롤링 및 감정 분석 수행
     const itemsWithContent = await Promise.all(
       apiData.items.map(async (item, idx) => {
-        // 기사 링크: link 값이 있으면 사용, 없으면 originallink 사용
         const urlToCrawl = item.link || item.originallink;
         console.log(`Item ${idx} - URL to crawl:`, urlToCrawl);
         if (!urlToCrawl) {
           console.log(`Item ${idx} - URL is missing.`);
           return null;
         }
-        // n.news.naver.com 도메인만 허용
         try {
           const parsedUrl = new URL(urlToCrawl);
           console.log(`Item ${idx} - Parsed hostname:`, parsedUrl.hostname);
@@ -129,7 +131,6 @@ export default async function handler(req, res) {
 
         try {
           console.log(`Item ${idx} - Fetching article page...`);
-          // 뉴스 기사 페이지 HTML 가져오기 (User-Agent 헤더 추가)
           const crawlResponse = await fetch(urlToCrawl, {
             headers: { "User-Agent": "Mozilla/5.0" },
           });
@@ -147,7 +148,6 @@ export default async function handler(req, res) {
             html.slice(0, 200)
           );
 
-          // cheerio를 사용해 HTML 파싱 및 본문 추출
           const $ = cheerio.load(html);
           let contentHtml = $(".newsct_article").html();
           if (!contentHtml || !contentHtml.trim()) {
@@ -162,7 +162,6 @@ export default async function handler(req, res) {
             contentHtml.length
           );
 
-          // 감정 분석 수행
           const sentiment = await analyzeSentimentForContent(contentHtml);
           console.log(`Item ${idx} - Sentiment result:`, sentiment);
 
@@ -177,12 +176,9 @@ export default async function handler(req, res) {
       })
     );
 
-    // null이 아닌 항목만 필터링 (긍정 필터링 제거)
     const filteredItems = itemsWithContent.filter((item) => item !== null);
-
     console.log("Handler - Total items:", filteredItems.length);
 
-    // 결과 데이터 구성
     const resultData = {
       lastBuildDate: apiData.lastBuildDate,
       total: apiData.total,
