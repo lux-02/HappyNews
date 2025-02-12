@@ -3,16 +3,22 @@
   background-color: #121212;
   color: #e0e0e0;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 1rem;
   font-family: "Arial", sans-serif;
 }
 
 .heading {
-  text-align: left;
+  text-align: center;
+  width: 100%;
+  font-size: 1.5rem;
   margin: 0;
-  font-size: 1.8rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+}
+
+.articleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 200px; /* 최소 높이 설정으로 애니메이션 공간 확보 */
 }
 
 .article {
@@ -20,10 +26,12 @@
   background-color: #1e1e1e;
   border: 2px solid #333;
   border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
+  padding: 0.8rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translateY(0);
+  will-change: transform, opacity;
 }
 
 .articlePositive {
@@ -39,13 +47,14 @@
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
   color: #ffffff;
 }
 
 .metaInfo {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.8rem;
@@ -80,40 +89,54 @@
 }
 
 .description {
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin-bottom: 1rem;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #333;
-  gap: 2rem;
 }
 
 .toggleButton {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  justify-content: center;
+  gap: 0.5rem;
   padding: 0.6rem 1.2rem;
   background-color: #2e7d32;
   border-radius: 24px;
   color: #e0e0e0;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
   font-size: 0.9rem;
-  letter-spacing: 0.5px;
-  border-color: #2e7d32;
   border: none;
+  width: 100%;
+  transform: scale(1);
+}
+
+.toggleButton:active {
+  transform: scale(0.95);
+}
+
+.toggleIcon {
+  font-size: 1.6rem;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: bold;
+}
+
+.toggleActive .toggleIcon {
+  transform: rotate(180deg);
 }
 
 .toggleButton:hover {
-  background-color: #2e7d32;
-  border-color: #388e3c;
+  background-color: #388e3c;
+  transform: translateY(-2px);
 }
 
 .toggleActive {
@@ -124,15 +147,6 @@
 .toggleActive:hover {
   background-color: #333;
   border-color: #505050;
-}
-
-.toggleIcon {
-  font-size: 1.6rem;
-  transition: transform 0.3s ease;
-}
-
-.toggleButton:hover .toggleIcon {
-  transform: scale(1.1);
 }
 
 .articleHeader {
@@ -163,27 +177,28 @@
 }
 
 .searchForm {
-  flex: 1;
+  width: 100%;
   display: flex;
-  gap: 1rem;
-  max-width: 600px;
+  gap: 0.5rem;
 }
 
-.searchInput {
+.searchInput,
+.searchInitialInput {
   flex: 1;
-  padding: 0.6rem 1rem;
+  padding: 0.8rem 1.2rem;
   border-radius: 24px;
   border: none;
   background-color: #2a2a2a;
   color: #e0e0e0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.3s ease;
 }
 
-.searchInput:focus {
+.searchInput:focus,
+.searchInitialInput:focus {
   outline: none;
   background-color: #333;
-  box-shadow: 0 0 0 2px #2e7d32;
+  box-shadow: 0 0 0 2px #388e3c;
 }
 
 .searchInput::placeholder {
@@ -195,25 +210,34 @@
   cursor: not-allowed;
 }
 
-.searchButton {
-  padding: 0.6rem 1.2rem;
+.searchButton,
+.searchInitialButton {
+  padding: 0.8rem 1.2rem;
   border-radius: 24px;
   border: none;
   background-color: #2e7d32;
-  color: #e0e0e0;
-  cursor: pointer;
+  color: #ffffff;
   font-size: 0.9rem;
   font-weight: 500;
+  cursor: pointer;
   transition: all 0.3s ease;
+  white-space: nowrap;
+  font-weight: bold;
 }
 
-.searchButton:hover:not(:disabled) {
+.searchButton:hover:not(:disabled),
+.searchInitialButton:hover:not(:disabled),
+.toggleButton:hover {
   background-color: #388e3c;
+  transform: translateY(-2px);
 }
 
-.searchButton:disabled {
+.searchButton:disabled,
+.searchInitialButton:disabled,
+.toggleButton:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+  transform: none;
 }
 
 .searchInitialContainer {
@@ -223,11 +247,11 @@
   justify-content: center;
   min-height: 80vh;
   text-align: center;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .searchInitialTitle {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
   color: #ffffff;
@@ -235,70 +259,44 @@
 }
 
 .searchInitialSubtitle {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #b0b0b0;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
+  max-width: 80%;
+  line-height: 1.5;
 }
 
 .searchInitialForm {
   width: 100%;
-  max-width: 600px;
+  max-width: 90%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
 .searchInitialInput {
-  width: 100%;
   padding: 1rem 1.5rem;
-  border-radius: 30px;
-  border: 2px solid #2e7d32;
-  background-color: #1e1e1e;
-  color: #ffffff;
   font-size: 1.1rem;
-  transition: all 0.3s ease;
-}
-
-.searchInitialInput:focus {
-  outline: none;
-  background-color: #262626;
-  box-shadow: 0 0 0 2px #388e3c;
-}
-
-.searchInitialInput::placeholder {
-  color: #808080;
+  background-color: #1e1e1e;
+  border: 2px solid #2e7d32;
 }
 
 .searchInitialButton {
   width: 100%;
   padding: 1rem;
-  border-radius: 30px;
-  border: none;
-  background-color: #2e7d32;
-  color: #ffffff;
   font-size: 1.1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  margin-top: 0.5rem;
 }
 
-.searchInitialButton:hover:not(:disabled) {
-  background-color: #388e3c;
-  transform: translateY(-2px);
-}
-
-.searchInitialButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
+.articleAnimating {
+  animation: reorder 0.5s ease-in-out forwards;
 }
 
 .articleBlurred {
-  position: relative;
-  filter: blur(5px);
+  opacity: 0.5;
+  transform: translateY(0) scale(0.98);
+  filter: blur(2px);
   pointer-events: none;
-  opacity: 0.7;
-  transition: all 0.3s ease;
 }
 
 .blurOverlay {
@@ -352,8 +350,8 @@
 }
 
 .loadingSpinner {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border: 3px solid #2e7d32;
   border-radius: 50%;
   border-top-color: transparent;
@@ -367,7 +365,7 @@
 }
 
 .loadingText {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #e0e0e0;
   animation: pulse 2s ease-in-out infinite;
 }
@@ -430,5 +428,221 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* 태블릿 이상 크기에서의 레이아웃 */
+@media (min-width: 768px) {
+  .container {
+    padding: 2rem;
+  }
+
+  .header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .heading {
+    text-align: left;
+    width: auto;
+    font-size: 1.8rem;
+  }
+
+  .searchForm {
+    max-width: 600px;
+  }
+
+  .toggleButton {
+    width: auto;
+  }
+
+  .article {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 1.1rem;
+  }
+
+  .metaInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+  }
+
+  .searchInitialContainer {
+    padding: 2rem;
+  }
+
+  .searchInitialTitle {
+    font-size: 3.5rem;
+  }
+
+  .searchInitialSubtitle {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin-bottom: 3rem;
+  }
+
+  .searchInitialForm {
+    max-width: 600px;
+  }
+}
+
+/* 검색 초기 화면 모바일 대응 */
+@media (min-width: 768px) {
+  .searchInitialContainer {
+    padding: 2rem;
+  }
+
+  .searchInitialTitle {
+    font-size: 3rem;
+  }
+
+  .searchInitialForm {
+    padding: 0;
+  }
+}
+
+/* 로딩 스피너 모바일 대응 */
+@media (min-width: 768px) {
+  .loadingSpinner {
+    width: 50px;
+    height: 50px;
+  }
+
+  .loadingText {
+    font-size: 1.2rem;
+  }
+}
+
+.headingClickable {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  user-select: none;
+}
+
+.headingClickable:hover {
+  opacity: 0.8;
+}
+
+/* 모바일에서 터치 피드백 */
+@media (hover: none) {
+  .headingClickable:active {
+    opacity: 0.8;
+  }
+}
+
+/* 기사 정렬 애니메이션 */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.article {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+/* 호버 효과 */
+.article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.articleBlurred:hover {
+  transform: translateY(18px) scale(0.98);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes reorder {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(10px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* HAPPY 모드 전환 시 positive 기사 상단 이동 애니메이션 */
+.articleMoveToTop {
+  animation: moveToTop 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* HAPPY 모드 전환 시 non-positive 기사 하단 이동 애니메이션 */
+.articleMoveToBottom {
+  animation: moveToBottom 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ALL 모드 전환 시 재정렬 애니메이션 */
+.articleReorder {
+  animation: reorder 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes moveToTop {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-20px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes moveToBottom {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(20px) scale(0.98);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translateY(0) scale(0.98);
+    filter: blur(2px);
+  }
+}
+
+@keyframes reorder {
+  0% {
+    opacity: 0.5;
+    transform: translateY(0) scale(0.98);
+    filter: blur(2px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-10px) scale(0.99);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
