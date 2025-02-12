@@ -1,168 +1,161 @@
-.page {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
-  font-family: var(--font-geist-sans);
+/* styles/Home.module.css */
+.container {
+  background-color: #121212;
+  color: #e0e0e0;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: "Arial", sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-  }
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
-}
-
-.main ol {
-  font-family: var(--font-geist-mono);
-  padding-left: 0;
+.heading {
+  text-align: left;
   margin: 0;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  list-style-position: inside;
-}
-
-.main li:not(:last-of-type) {
-  margin-bottom: 8px;
-}
-
-.main code {
-  font-family: inherit;
-  background: var(--gray-alpha-100);
-  padding: 2px 4px;
-  border-radius: 4px;
+  font-size: 1.8rem;
   font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
-.ctas {
-  display: flex;
-  gap: 16px;
+.article {
+  background-color: #1e1e1e;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.3s ease;
 }
 
-.ctas a {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  border: none;
-  border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
-  cursor: pointer;
+.articlePositive {
+  border-color: #2e7d32; /* 진한 녹색 */
+}
+
+.articleNegative {
+  border-color: #c62828; /* 진한 빨간색 */
+}
+
+.articleNeutral {
+  border-color: #616161; /* 진한 회색 */
+}
+
+.title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+
+.metaInfo {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
+  margin-bottom: 0.8rem;
+}
+
+.pubDate {
+  font-size: 0.9rem;
+  color: #b0b0b0;
+  margin: 0;
+}
+
+.sentiment {
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 0.2rem 0.8rem;
+  border-radius: 12px;
+  background-color: #2a2a2a;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-a.primary {
-  background: var(--foreground);
-  color: var(--background);
-  gap: 8px;
+.articlePositive .sentiment {
+  color: #2e7d32; /* 진한 녹색 - 테두리 색상과 동일 */
 }
 
-a.secondary {
-  border-color: var(--gray-alpha-200);
-  min-width: 180px;
+.articleNegative .sentiment {
+  color: #c62828; /* 진한 빨간색 - 테두리 색상과 동일 */
 }
 
-.footer {
-  grid-row-start: 3;
+.articleNeutral .sentiment {
+  color: #616161; /* 진한 회색 - 테두리 색상과 동일 */
+}
+
+.description {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.header {
   display: flex;
-  gap: 24px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #333;
 }
 
-.footer a {
+.toggleButton {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.8rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #2e7d32;
+  border-radius: 24px;
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  border-color: #2e7d32;
+  border: none;
 }
 
-.footer img {
-  flex-shrink: 0;
+.toggleButton:hover {
+  background-color: #2e7d32;
+  border-color: #388e3c;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
+.toggleActive {
+  border-color: #333;
+  background-color: #333;
 }
 
-@media (max-width: 600px) {
-  .page {
-    padding: 32px;
-    padding-bottom: 80px;
-  }
-
-  .main {
-    align-items: center;
-  }
-
-  .main ol {
-    text-align: center;
-  }
-
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
+.toggleActive:hover {
+  background-color: #333;
+  border-color: #505050;
 }
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
+.toggleIcon {
+  font-size: 1.6rem;
+  transition: transform 0.3s ease;
+}
+
+.toggleButton:hover .toggleIcon {
+  transform: scale(1.1);
+}
+
+.articleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.articleHeader:hover {
+  opacity: 0.8;
+}
+
+/* 기존 .sentiment 관련 스타일 삭제 */
+.sentimentPositive,
+.sentimentNegative,
+.sentimentNeutral {
+  display: none;
+}
+
+.content {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #2a2a2a;
+  border-radius: 4px;
+  line-height: 1.6;
 }
