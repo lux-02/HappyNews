@@ -80,7 +80,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const { query = "주식", display = 30, start = 1, sort = "date" } = req.query;
+  const { query = "주식", display = 100, start = 1, sort = "date" } = req.query;
   const apiUrl = `https://openapi.naver.com/v1/search/news.json?query=${encodeURIComponent(
     query
   )}&display=${display}&start=${start}&sort=${sort}`;
