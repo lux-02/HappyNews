@@ -1,40 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# HappyNews 🌞
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
 
-First, run the development server:
+> HAPPY NEWS : 세상에 희망을, 뉴스에 행복을 전하는 긍정 뉴스 필터링 검색 서비스
+>
+> https://happy-news-phi.vercel.app
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📑 목차
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. [프로젝트 개요](#1-프로젝트-개요)
+2. [서비스 컨셉 및 미션](#2-서비스-컨셉-및-미션)
+3. [타겟 오디언스](#3-타겟-오디언스)
+4. [주요 기능](#4-주요-기능)
+5. [기술 스택](#5-기술-스택)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## 1. 프로젝트 개요
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### 🎯 목표
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+- 전 세계 및 국내의 긍정적인(positive sentiment) 뉴스 필터링 검색
+- 사용자에게 심리적 안정감과 희망, 긍정적 메시지 전달
+- 부정적인 뉴스로 인한 불안, 스트레스, 부정적 편향(negative bias) 완화
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 📝 배경 및 필요성
 
-## Learn More
+- 전통 언론의 부정적 뉴스 편중 현상
+- 부정적 뉴스의 지속적 노출로 인한 심리적 피로감
+- 긍정적 뉴스의 사회적 가치와 영향력
+- 뉴스 소비자들의 심리적 웰빙을 위한 큐레이션 필요성
 
-To learn more about Next.js, take a look at the following resources:
+## 2. 서비스 컨셉 및 미션
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+### 💡 핵심 컨셉
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- AI 기반 감정 분석을 통한 긍정적 뉴스 필터링
+- 직관적이고 사용자 친화적인 UI/UX
 
-## Deploy on Vercel
+### 🚀 미션
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 긍정적 뉴스 큐레이션을 통한 사용자 심리 안정 도모
+- 희망적 메시지 전달로 긍정적 사회 변화 유도
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## 3. 타겟 오디언스
+
+### 👥 주요 사용자층
+
+- 긍정적 에너지를 추구하는 뉴스 소비자
+- 디지털 네이티브 세대
+- 정신 건강과 웰빙에 관심 있는 사용자
+
+### 🎭 페르소나
+
+| 이름   | 나이/직업     | 특징                           |
+| ------ | ------------- | ------------------------------ |
+| 김민준 | 35세/직장인   | 일상적 뉴스 소비에 지친 현대인 |
+| 이서연 | 28세/대학원생 | 긍정적 균형을 찾는 젊은 세대   |
+
+## 4. 주요 기능
+
+### 🔍 뉴스 수집 및 분석
+
+- Naver News Search API를 통한 실시간 뉴스 수집
+- 구글 클라우드 Natural Language API 감정 분석
+- 긍정 지수 기반 뉴스 필터링
+
+### 🎯 맞춤형 큐레이션
+
+- HAPPY/ALL 모드 전환 기능
+- 키워드 기반 뉴스 필터링
+
+### 🎨 UI/UX
+
+- 직관적인 검색 인터페이스
+- 카드형 뉴스 레이아웃
+- 반응형 웹 디자인
+
+## 5. 기술 스택
+
+### 🔧 백엔드
+
+- **메인 프레임워크**: Node.js + Express.js
+- **API 통합**
+
+  - Naver Search API
+  - Google Cloud Natural Language API
+
+### 🎨 프론트엔드
+
+- **프레임워크**: Next.js 14
+- **상태관리**
+  - Next.js App Router의 Server Components
+  - Context API
+- **스타일링**
+  - CSS Modules
+- **개발 도구**
+
+  - ESLint
+  - Prettier
+
+### ⚙️ 인프라
+
+- **배포 및 호스팅**
+  - Vercel
+- **CI/CD**
+  - GitHub Actions
+- **모니터링**
+  - Vercel Analytics
+  - Google Analytics
+
+### 🔍 API 및 외부 서비스
+
+- **뉴스 데이터**
+  - Naver News Search API
+- **AI/ML**
+  - Google Cloud Natural Language API
+- **분석 도구**
+  - Sentiment Analysis
+  - Keyword Extraction
+
+### 📊 개발 도구 및 협업
+
+- **버전 관리**: Git & GitHub
