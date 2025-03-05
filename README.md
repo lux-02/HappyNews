@@ -129,7 +129,6 @@
 
 ### 🎥 서비스 시연
 
-<video width="100%" controls>
-  <source src="happy_news_vd.mov" type="video/quicktime">
-  브라우저가 비디오 태그를 지원하지 않습니다.
-</video>
+<p align="center">
+  <img src="public/happy_news_vd.gif" alt="HappyNews 서비스 시연" width="100%">
+</p>
